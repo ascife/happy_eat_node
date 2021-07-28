@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
+</head>
+<body>
+  
+  <form name="form" action="/products/upload" method="POST" enctype="multipart/form-data">
+    <input type="text" name="description" placeholder="descripcion">
+    <input type="text" name="ubication" placeholder="ubicacion">
+    <input type="file" name="image" accept=".png, .svg, .jpg, .jpeg">
+    <button type="submit">enviar</button>
+  </form>
+
+  <script>
+    document.form.onsubmit = async (ev)=> {
+      ev.preventDefault();
+      let formData = new FormData(ev.currentTarget);
+    
+      let url = "http://192.168.0.107:4000/products/upload";
+      axios.post(url, formData, {
+        "Content-Type": "multipart/form-data"
+      })
+      .then((response)=> {
+        let data = response.data;
+        addCard(data);
+      })
+      .catch((error)=> {
+        console.log(error);
+      })
+    } 
+
+    function addCard(data) {
+      let card = document.createElement("div");
+      card.innerHTML = `
+        <div>
+          ${data.description}
+          <img src="${data.imageUrl}"/>  
+        </div>`;
+      document.body.appendChild(card);
+    }
+
+    let url = "http://192.168.0.107:4000/products/get_all";
+    axios.get(url)
+    .then((response)=> {
+      let data = response.data;
+      data.forEach(dataCard => addCard(dataCard));
+    })
+  </script>
+
+
+
+  
+</body>
+</html>
