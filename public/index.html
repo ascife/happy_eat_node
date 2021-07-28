@@ -21,7 +21,7 @@
       ev.preventDefault();
       let formData = new FormData(ev.currentTarget);
     
-      let url = "http://192.168.0.107:4000/products/upload";
+      let url = "/products/upload";
       axios.post(url, formData, {
         "Content-Type": "multipart/form-data"
       })
@@ -44,7 +44,7 @@
       document.body.appendChild(card);
     }
 
-    let url = "http://192.168.0.107:4000/products/get_all";
+    let url = "/products/get_all";
     axios.get(url)
     .then((response)=> {
       let data = response.data;
